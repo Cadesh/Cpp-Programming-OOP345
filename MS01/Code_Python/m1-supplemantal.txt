@@ -1,0 +1,69 @@
+OOP345 Milestone One - Supplemental.
+
+I need to apologize.
+
+The 9 lines of python was more complex than I thought.  
+
+I thought numpy dot was a dot product (inner product).  It is.  It is a dot product, plus a matrix multiple, plus a matrix-vector multiply.
+
+Also vector * vector is a component-wise multiply of the vector elements, not a dot product.
+
+The code requires a matrix multiply and a matrix transpose.
+
+Sorting all that out, the nine lines can be converted tinto C++.  Both the python and the C++ produce the same answer.
+
+A matrix is a table of numbers.  It has rows and columns.  For our purposes, each row has the same number of columns.
+
+We will represent a matrix as a 2D vector:  vector<vector<double>>.
+
+Transposing a matrix flips the rows and columns around.
+
+    matrix Y = transpose of matrix X:
+
+    size_t rows =  X.size();    //  number of rows    for matrix X
+    size_t cols =  X[0].size(); //  number of columns for matrix X
+    Y.resize(cols);             // set nunber of rows for Y
+    for(auto&e : Y)             // set nunber of cols for each row of Y
+      e.resize(rows);
+
+    for(size_t r = 0; r < rows; r++)   // copy data
+      for(size_t c = 0; c < cols; c++)
+        Y[c][r] = X[r][c];
+
+
+A matrix multipling a vector consists of forming each element of the output vector by taking the inner product of each row of the matrix with the input vector.
+
+  vector Y = matrix M * vector X:
+
+  for(size_t i = 0; i < M.size(); i++)
+    Y[i] = inner_product(M[i].begin(), M[i].end(), X.begin(), 0.);
+
+A component-wise vector muliplication of two vectors X and Y producing a third vector RESULT is merely:
+
+  for(size_t i = 0; i < X.size(); i++)
+    RESULT[i] = X[i] * Y[i];
+
+or, if you prefer:
+
+  transform(X,begin(), X.end(),
+            Y.begin(),
+            RESULT.begin(),
+            [] (double x, double y) { return x * y; });
+
+I have coded the python neural net program line in C++ using the above three methods. (Program nine.cpp)
+
+What I would like you to do for milestone 1 is apply the techniques from nine.cpp to main.py the object-orientated python program that were created from the nine.py program.
+
+If you remove all comments and blank lines, the 74 line program, main.py, is only 28 lines, main-28.py.
+
+The first thing is to convince yourself main.py and the nine.py programs are indeed the same program.  The object-orientated python was created from the nine.py version.
+
+Then converting main.py to C++ following what I did to convert nine.py to C++ is easy.
+
+Note nine.cpp supports embedded python as C++ comments.  The python can be executed using grep to extract the python lines, and sed to remove the C++ comment.
+This allows you to test your C++ code and compare the python with your C++ code. (Use print and look at the output)
+
+I have included a C++ 98 C++ convertion of the 9 line program, ten.cpp.  It uses 1-D vectors to hold matrices.  It could of used 2-D vectors but didn't.  2-D is much more understandable.
+Take a look at the code.  I don't like it.  It does a lot of things the hard way.  It is neither smooth nor elegant.  We can do better, especially with modern C++.
+
+I trust you will understand nine.cpp and find it useful to convert main.py or main-28.py to C++
